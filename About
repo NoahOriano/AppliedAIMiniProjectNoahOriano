@@ -1,0 +1,26 @@
+This project evaluates the effectiveness of multiple models on a multitude of datasets.
+
+The datasets evaluated are as follows:
+1.	Iris
+2.	Wine
+3.	Breast Cancer
+4.	Digits
+5.	MNIST
+6.	CIFAR-10
+7.	CIFAR-100
+8.	Fashion MNIST
+9.	Titanic
+10.	California Housing
+11.	Skin Segmentation
+12.	Abalone
+13.	Malaria
+14.	EuroSAT
+15.	Rock Paper Scissors
+16.	Penguins
+17.	MNIST Corrupted
+18.	TF Flowers
+19.	Wine Quality
+20.	Dry Beans
+21.	Rice
+22.	Parkinsons
+These datasets were evaluated using the following models:
