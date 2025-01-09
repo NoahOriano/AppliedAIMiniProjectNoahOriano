@@ -5,50 +5,38 @@ import numpy as np
 
 class GMM:
     def train(X_train, y_train):
+        y_train = np.squeeze(y_train)
         n_classes = len(np.unique(y_train))
-        # Split the data into training and validation sets
-        X_train_split, X_test, y_train_split, y_test = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
-        # Try Gaussian Mixture Models using different types of covariances.
-        classifiers = {
-            covar_type: skGMM(
-                n_components=n_classes,
-                covariance_type=covar_type,
-                max_iter=4,
-                init_params='random'
-            )
-            for covar_type in ['spherical', 'diag', 'tied']
-        }
-
-        # Train classifiers and compute confusion matrices
-        results = {}
-        for name, classifier in classifiers.items():
-            # Initialize GMM parameters in a supervised manner using training data
-            classifier.means_init = np.array([
-                X_train_split[y_train_split == i].mean(axis=0) for i in range(n_classes)
-            ])
-            
-            # Train the GMM
-            classifier.fit(X_train_split)
-            
-            # Predict on the test set
-            y_test_pred = classifier.predict(X_test)
-            
-            # Compute the confusion matrix
-            cm = confusion_matrix(y_test, y_test_pred)
-            results[name] = cm
         
-        # Find the best classifier
-        best_classifier = max(results, key=lambda key: np.sum(results[key]))
-        # Retrain the model on the full training set with the best covariance type
-        best_model = skGMM(
-                n_components=n_classes,
-                covariance_type=best_classifier,
-                max_iter=8,
-                init_params='random'
+        # Initialize the Gaussian Mixture Model with spherical covariance
+        classifier = skGMM(
+            n_components=n_classes,
+            covariance_type='spherical',
+            max_iter=20,
+            init_params='random'
         )
-        best_model.fit(X_train, y_train)
-        return best_model
+        
+        # Train the GMM on the full training set
+        classifier.fit(X_train)
+
+        # Map the GMM components to the classes
+        y_pred = classifier.predict(X_train)
+        # Convert y_pred to integer
+        y_pred = np.array(y_pred)
+        y_train = np.array(y_train)
+        y_pred = y_pred.astype(int)
+        # Convert y_train to integer
+        y_train = y_train.astype(int)
+        class_mapping = {}
+        for i in range(n_classes):
+            class_mapping[i] = np.argmax(np.bincount(y_train[y_pred == i]))
+        classifier.class_mapping = class_mapping
+        
+        return (classifier, class_mapping)
     def predict_and_evaluate(model, X_test, y_test):
+        (model, class_mapping) = model
         y_pred = model.predict(X_test)
+        y_pred = np.array([class_mapping[i] for i in y_pred])
         cm = confusion_matrix(y_test, y_pred)
         return cm
+    

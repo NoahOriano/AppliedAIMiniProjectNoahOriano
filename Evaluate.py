@@ -334,11 +334,12 @@ def evaulate_models():
         yy = dry_beans.data.targets
 
         # Convert labels into integers by mapping them to integers
+        labels = np.unique(data_y)
         label_map = {}
-        for i, label in enumerate(np.unique(yy)):
+        for i, label in enumerate(labels):
             label_map[label] = i
-        for i in range(len(yy)):
-            yy[i] = label_map[yy[i]]
+        for i in range(len(data_y)):
+            data_y[i] = label_map[data_y[i]]
 
         # Randomize the order of data
         xx, yy = randomize_data(data_x, data_y)
@@ -355,6 +356,7 @@ def evaulate_models():
         data_y = rice.data.targets
         data_x = np.array(data_x)
         data_y = np.array(data_y).reshape(-1)
+
         # Convert labels into integers by mapping them to integers
         labels = np.unique(data_y)
         label_map = {}
@@ -362,6 +364,7 @@ def evaulate_models():
             label_map[label] = i
         for i in range(len(data_y)):
             data_y[i] = label_map[data_y[i]]
+            
         dataset_name = "rice"
         data_x, data_y = randomize_data(data_x, data_y)
         Helper.evaluate_all_models_on_dataset(data_x, data_y, dataset_name)
