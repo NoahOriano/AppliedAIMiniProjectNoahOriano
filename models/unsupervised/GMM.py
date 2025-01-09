@@ -16,7 +16,7 @@ class GMM:
                 max_iter=4,
                 init_params='random'
             )
-            for covar_type in ['spherical', 'diag', 'tied', 'full']
+            for covar_type in ['spherical', 'diag', 'tied']
         }
 
         # Train classifiers and compute confusion matrices
@@ -43,7 +43,7 @@ class GMM:
         best_model = skGMM(
                 n_components=n_classes,
                 covariance_type=best_classifier,
-                max_iter=15,
+                max_iter=8,
                 init_params='random'
         )
         best_model.fit(X_train, y_train)

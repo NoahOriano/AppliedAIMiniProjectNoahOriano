@@ -73,12 +73,12 @@ def evaluate_all_models_on_dataset(data_x, data_y, dataset_name):
         model = SOM.train(X_train, y_train)
         cm = SOM.predict_and_evaluate(model, X_test, y_test)
         save_results("som", dataset_name, cm)
-    # Evaluate GMM
-    if not is_evaluated("gmm", dataset_name):
-        from models.unsupervised.GMM import GMM
-        model = GMM.train(X_train, y_train)
-        cm = GMM.predict_and_evaluate(model, X_test, y_test)
-        save_results("gmm", dataset_name, cm)
+    # # Evaluate GMM
+    # if not is_evaluated("gmm", dataset_name):
+    #     from models.unsupervised.GMM import GMM
+    #     model = GMM.train(X_train, y_train)
+    #     cm = GMM.predict_and_evaluate(model, X_test, y_test)
+    #     save_results("gmm", dataset_name, cm)
 
 
 def is_evaluated(model_name, dataset_name):

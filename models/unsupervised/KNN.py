@@ -1,10 +1,11 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
+import numpy as np
 
 class KNN:
     def train(X_train, y_train):
         # Count the number of classes
-        num_classes = len(set(y_train))
+        num_classes = len(np.unique(y_train))
         # Count the number of samples
         num_samples = len(y_train)
         # Calculate the number of neighbors to be a max of 20, and a min of 3, and a sqrt of the number of samples per class
